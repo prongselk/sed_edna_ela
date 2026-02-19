@@ -1,0 +1,61 @@
+conda activate qiime2-amplicon-2025.7
+
+biom convert -i new_feature_table.tsv -o /mnt/e/sed_edna_ela/data/qiime2/feature_table.biom --to-hdf5 --table-type="OTU table"
+
+qiime tools import \
+  --input-path /mnt/e/sed_edna_ela/data/qiime2/feature_table.biom \
+  --type 'FeatureTable[Frequency]' \
+  --input-format BIOMV210Format \
+  --output-path /mnt/e/sed_edna_ela/data/qiime2/feature_table.qza
+
+
+
+qiime feature-table relative-frequency \
+  --i-table /mnt/e/sed_edna_ela/data/qiime2/feature_table.qza \
+  --o-relative-frequency-table /mnt/e/sed_edna_ela/data/qiime2/relative_frequency_table.qza
+
+
+qiime feature-table summarize \
+  --i-table /mnt/e/sed_edna_ela/data/qiime2/feature_table.qza \
+  --o-visualization /mnt/e/sed_edna_ela/data/qiime2/feature_table_summary.qzv
+
+
+
+qiime tools view /mnt/e/sed_edna_ela/data/qiime2/feature_table_summary.qzv
+
+
+
+biom convert \
+  -i /mnt/e/sed_edna_ela/data/qiime2/feature_table.biom \
+  -o /mnt/e/sed_edna_ela/data/qiime2/relative_frequency_table.tsv \
+  --to-tsv
+
+
+
+#qiime tools import \
+  --type 'FeatureData[Sequence]' \
+  --input-path /mnt/e/sed_edna_ela/data/input/all_lengthfilter_zotus_4.fasta \
+  --output-path /mnt/e/sed_edna_ela/data/qiime2/sequences.qza
+
+#cd /mnt/e/sed_edna_ela/data/qiime2/
+
+#qiime alignment mafft \
+#  --i-sequences sequences.qza \
+#  --o-alignment aligned-sequences.qza
+
+#qiime alignment mask \
+#  --i-alignment aligned-sequences.qza \
+#  --o-masked-alignment masked-alignment.qza
+
+#qiime phylogeny fasttree \
+#  --i-alignment masked-alignment.qza \
+#  --o-tree unrooted-tree.qza
+
+#qiime phylogeny midpoint-root \
+#  --i-tree unrooted-tree.qza \
+#  --o-rooted-tree rooted-tree.qza
+
+#qiime tools export \
+#  --input-path rooted-tree.qza \
+#  --output-path .
+
